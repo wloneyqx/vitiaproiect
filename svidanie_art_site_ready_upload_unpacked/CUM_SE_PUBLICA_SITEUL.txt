@@ -1,0 +1,45 @@
+IMPORTANT
+
+Ce vezi acum cu titlul "Svidanie Art" este README.md, adica documentatia proiectului.
+Nu este site-ul final.
+
+Pentru ca site-ul sa apara pe internet trebuie publicat ca aplicatie Next.js.
+
+Varianta recomandata: Vercel
+
+1. Intra pe https://vercel.com
+2. Creeaza cont sau logheaza-te.
+3. Alege Add New Project.
+4. Incarca / conecteaza proiectul acesta:
+   C:\Users\User\OneDrive\Изображения\Документы\vitiaproiect\svidanie_art_site_ready_upload_unpacked
+5. Vercel va detecta automat Next.js.
+6. La Build Command lasa:
+   npm run build
+7. La Install Command lasa:
+   npm install
+8. Apasa Deploy.
+
+Varianta Netlify
+
+Nu folosi simplu drag & drop ca pentru HTML static.
+Acest proiect este Next.js, deci trebuie importat ca proiect cu build.
+
+Setari Netlify:
+
+Build command:
+npm run build
+
+Publish directory:
+.next
+
+Daca Netlify cere framework:
+Next.js
+
+Ca sa vezi site-ul local pe calculator:
+
+1. Deschide folderul proiectului.
+2. Ruleaza START_SITE_DIRECT.bat
+3. Intra in browser pe:
+   http://localhost:3000
+
+Nu deschide README.md pentru site. README.md este doar instructiune/documentatie.

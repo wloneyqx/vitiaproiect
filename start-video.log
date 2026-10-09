@@ -1,0 +1,9 @@
+
+> svidanie_art@0.1.0 start
+> next start --port 3002
+
+▲ Next.js 16.3.0
+- Local:         http://localhost:3002
+- Network:       http://26.182.144.124:3002
+✓ Ready in 410ms
+✓ Running next.config.ts took 83ms

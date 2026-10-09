@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// Lowercase to exactly match the existing `Material = "metal" | "string" | "canvas"`
+// union already used throughout PortraitArt.tsx / Header.tsx / Footer.tsx / Hero.tsx.
+enum Material {
+  metal
+  string
+  canvas
+}
+
+enum OrderStatus {
+  NEW
+  CONFIRMED
+  IN_PRODUCTION
+  READY
+  SHIPPED
+  DELIVERED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  REFUNDED
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  description   String
+  price         Float
+  compareAtPrice Float?
+  salePrice      Float?
+  salePercent    Int?
+  isOnSale       Boolean  @default(false)
+  imageUrl      String?
+  material      Material
+  category      String   @default("Custom Portrait")
+  occasion      String
+  theme         String?
+  active        Boolean  @default(true)
+  topSellerRank Int?     @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  variants   ProductVariant[]
+  orderItems OrderItem[]
+
+  @@index([material])
+  @@index([active])
+}
+
+model ProductVariant {
+  id            String   @id @default(cuid())
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size          String
+  style         String?
+  priceOverride Float?
+  enabled       Boolean  @default(true)
+  sortOrder     Int      @default(0)
+
+  orderItems OrderItem[]
+
+  @@index([productId])
+}
+
+model Order {
+  id                    Int           @id @default(autoincrement())
+  orderNumber           String        @unique
+
+  firstName             String
+  lastName              String
+  email                 String
+  phone                 String
+  country               String
+  city                  String
+  address               String
+  postalCode            String
+
+  subtotal              Float
+  shippingCost          Float         @default(0)
+  total                 Float
+
+  status                OrderStatus   @default(NEW)
+  paymentStatus         PaymentStatus @default(UNPAID)
+  stripePaymentIntentId String?
+
+  items OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+}
+
+model OrderItem {
+  id      String @id @default(cuid())
+  orderId Int
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String?
+  product   Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variantId String?
+  variant   ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  productName     String
+  productImageUrl String?
+  material        Material
+  size            String?
+  style           String?
+  unitPrice       Float
+  quantity        Int    @default(1)
+  lineTotal       Float
+
+  uploadedPhotoUrl  String?
+  previewImageUrl   String?
+  customizationNote String?
+
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
+  @@index([productId])
+}

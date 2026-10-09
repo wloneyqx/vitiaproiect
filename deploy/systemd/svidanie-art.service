@@ -1,0 +1,20 @@
+[Unit]
+Description=svidanie_art Next.js store
+After=network.target mysql.service
+
+[Service]
+Type=simple
+User=svidanie
+Group=www-data
+WorkingDirectory=/var/www/svidanie_art/current
+EnvironmentFile=/var/www/svidanie_art/shared/.env.production
+Environment=NODE_ENV=production
+Environment=PORT=3000
+ExecStart=/usr/bin/node .next/standalone/server.js
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
