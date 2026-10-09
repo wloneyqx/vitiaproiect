@@ -48,7 +48,10 @@ next-env.d.ts
 /dev.db-journal
 
 # uploads
-/public/uploads/
+/public/uploads/*
+!/public/uploads/products/
+!/public/uploads/products/gallery/
+!/public/uploads/products/gallery/**
 
 # local JSON backend
 /data/store.json
